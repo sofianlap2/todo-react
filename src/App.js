@@ -2,9 +2,11 @@ import './App.css';
 import React, {useState} from 'react';
 import data from './utils/data.json';
 import './sass/todo.css';
+import { useId } from "react-id-generator";
 
 function App() {
 
+  const [htmlId] = useId();
   const [tasksList, setTasksList] = useState(data);
   const [newTask, setNewTask] = useState({
     task : '',
@@ -15,7 +17,7 @@ function App() {
   const onChangeHandler = (e) => {
     setNewTask({
       task : e.target.value,
-      id: tasksList.length + 1,
+      id: htmlId,
       complete : true
     })
   }
