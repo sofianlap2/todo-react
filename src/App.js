@@ -1,23 +1,41 @@
 import './App.css';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import data from './utils/data.json';
-import './sass/todo.css';
-import { useId } from "react-id-generator";
+import './sass/todo.scss';
+import Form from './components/Form';
+import TaskList from './components/TaskList';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function App() {
 
-  const [htmlId] = useId();
+  //**CONSTANTS */
   const [tasksList, setTasksList] = useState(data);
+  const [filteredTodos, setFilteredTodos] = useState([]);
+  const [status, setStatus] = useState('');
   const [newTask, setNewTask] = useState({
     task : '',
     id : '',
     complete : '',
   });
 
+  //** Functions */
+
+  useEffect(() => {
+    getLocalStorage();
+  }, []);
+
+  useEffect(() => {
+    filterHandler();
+    saveLocalStorage();
+  }, [status, tasksList]);  useEffect(() => {
+    filterHandler();
+    saveLocalStorage();
+  }, [status, tasksList]);
+
   const onChangeHandler = (e) => {
     setNewTask({
       task : e.target.value,
-      id: htmlId,
+      id: tasksList.length + Math.random() * 100,
       complete : true
     })
   }
@@ -52,25 +70,66 @@ function App() {
     }));
   }
 
+  const selectChangeHandler = (event) => {
+    setStatus(event.target.value);
+  }
+
+  const filterHandler = () => {
+    switch (status) {
+      case 'completed':
+        setFilteredTodos(tasksList.filter(task => task.complete === true));
+        break;
+      case 'uncompleted':
+        setFilteredTodos(tasksList.filter(task => task.complete === false));
+        break;
+      default:
+        setFilteredTodos(tasksList);
+        break;
+    }
+  }
+
+  const saveLocalStorage = () => {
+    localStorage.setItem('todos', JSON.stringify(tasksList));
+  }
+
+  const getLocalStorage = () => {
+    if (localStorage.getItem('todos') === null) {
+      localStorage.setItem('todos', JSON.stringify([]));
+    } else {
+      let localTodos = JSON.parse(localStorage.getItem('todos'));
+      setTasksList(localTodos);
+    }
+  }
+
+  const theme = createTheme({
+    palette: {
+      mode: 'dark',
+      primary: {
+        main: '#134b30',
+        darker: '#053e85',
+      },
+    },
+  });
+
   return (
-    <div className="App">
-      <h1>Todo app</h1>
-      <form onSubmit={onSubmitHandler}>
-        <label htmlFor="task">add new task</label>
-        <input value={newTask.task} id="task" name="task" placeholder="add task here" onChange={onChangeHandler}></input>
-        <button>ADD</button>
-      </form>
-      {tasksList && tasksList.map(todo => (
-        <ul key={todo.id}>
-          <li className={todo.complete ? 'task-li' : ''}>
-            {todo.task}
-          </li>
-            <button onClick={() => delteHandler(todo)}>Delete</button>
-            <button onClick={() => editHandler(todo.id, 'john')}>Edit</button>
-            <button onClick={() => completedHandler(todo.id)}>{todo.complete? 'Completed' : 'todo' }</button>
-        </ul>
-      ))}
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <h1>Todo app</h1>
+        <Form 
+        onSubmitHandler={onSubmitHandler}
+        onChangeHandler={onChangeHandler}
+        status={status}
+        selectChangeHandler={selectChangeHandler}
+        newTask={newTask}
+        />
+        <TaskList 
+        filteredTodos={filteredTodos} 
+        delteHandler={delteHandler} 
+        editHandler={editHandler} 
+        completedHandler={completedHandler} 
+        />
+      </div>
+    </ThemeProvider>
   );
 }
 
