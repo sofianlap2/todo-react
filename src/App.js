@@ -4,7 +4,9 @@ import data from './utils/data.json';
 import './sass/todo.scss';
 import Form from './components/Form';
 import TaskList from './components/TaskList';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import Stack from '@mui/material/Stack';
 
 function App() {
 
@@ -101,35 +103,28 @@ function App() {
     }
   }
 
-  const theme = createTheme({
-    palette: {
-      mode: 'dark',
-      primary: {
-        main: '#134b30',
-        darker: '#053e85',
-      },
-    },
-  });
-
   return (
-    <ThemeProvider theme={theme}>
-      <div className="App">
-        <h1>Todo app</h1>
-        <Form 
-        onSubmitHandler={onSubmitHandler}
-        onChangeHandler={onChangeHandler}
-        status={status}
-        selectChangeHandler={selectChangeHandler}
-        newTask={newTask}
-        />
-        <TaskList 
-        filteredTodos={filteredTodos} 
-        delteHandler={delteHandler} 
-        editHandler={editHandler} 
-        completedHandler={completedHandler} 
-        />
-      </div>
-    </ThemeProvider>
+    <Container className="App" >
+      <Stack spacing={2} justifyContent="center" textAlign="center">
+          <Typography variant="h1">Todo app</Typography>
+
+          <Form 
+            onSubmitHandler={onSubmitHandler}
+            onChangeHandler={onChangeHandler}
+            status={status}
+            selectChangeHandler={selectChangeHandler}
+            newTask={newTask}
+          />
+
+          <TaskList 
+            filteredTodos={filteredTodos} 
+            delteHandler={delteHandler} 
+            editHandler={editHandler} 
+            completedHandler={completedHandler} 
+          />
+
+        </Stack>
+      </Container>
   );
 }
 
