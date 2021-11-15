@@ -10,7 +10,8 @@ import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
-
+import todo from '../sass/todo.scss'
+import CancelIcon from '@mui/icons-material/Cancel';
 
 function TaskList({
     filteredTodos,
@@ -19,8 +20,35 @@ function TaskList({
     isEditing, 
     updateEdit, 
     handleEditInputChange, 
-    setIsEditing
+    setIsEditing,
+    cancelEdit
 }) {
+
+    const enterEditMode = (todo) => {
+        if (todo.id === isEditing) {
+            return(
+                <Grid container xs={8} alignItems="center">
+                    <Grid item xs={8}>
+                        <TextField size="small"/>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <Button onClick={() => updateEdit(todo.id)}>edit</Button>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <CancelIcon onClick={cancelEdit}>Cancel</CancelIcon>
+                    </Grid>
+                </Grid>
+            )
+        } else {
+            return (
+                <Grid item xs={8}>
+                    <ListItem className={todo.complete ? 'task-li' : ''}>
+                        <ListItemText>{todo.task}</ListItemText>
+                    </ListItem>
+                </Grid>
+            )
+        }
+    }
 
     return (
         <Grid container justifyContent="center">
@@ -28,23 +56,8 @@ function TaskList({
                 <Paper variant="outlined" square>
                     {filteredTodos && filteredTodos.map((todo) => 
                         <Grid key={todo.id} container direction="row" alignItems="center">
-                        {isEditing === todo.id ?
-                            (
-                                <Grid item xs={8}>
-                                    <FormControl>
-                                        <Input onChange={handleEditInputChange}></Input>
-                                        <Button type="submit" onClick={() => updateEdit(todo.id)}>EDIT</Button>
-                                    </FormControl>
-                                </Grid>
-                            ) : 
-                            (
-                                <Grid item xs={8}>
-                                    <ListItem className={todo.complete ? 'task-li' : ''}>
-                                    <ListItemText>{todo.task}</ListItemText>
-                                    </ListItem>
-                                </Grid>
-                            )
-                        }
+    
+                        {enterEditMode(todo)}
                         
                         <Grid item xs={4} >
                         <DeleteIcon 
@@ -59,7 +72,7 @@ function TaskList({
                         <CheckCircleIcon size="small" variant="contained" onClick={() => completedHandler(todo.id)}>{todo.complete? 'Completed' : 'todo' }</CheckCircleIcon>
                         </Grid>
             
-                    </Grid>
+                        </Grid>
                     )}
                 </Paper>
             </Grid>

@@ -91,13 +91,17 @@ function App() {
   }
     
   const updateEdit = (id) => {
-    console.log('clicked');
-    setTasksList(tasksList.map(todo => {
-        if (todo.id === id) {
-            todo.task = currentTodo;
-        }
-        return todo;
-    }))
+  //   setTasksList(tasksList.map(todo => {
+  //     if (todo.id === id) {
+  //         todo.task = currentTodo;
+  //     }
+  //     return todo;
+  // }))
+    setIsEditing(null);
+    setCurrentTodo({});
+  }
+
+  const cancelEdit = () => {
     setIsEditing(null);
     setCurrentTodo({});
   }
@@ -149,6 +153,7 @@ function App() {
               updateEdit={updateEdit}
               handleEditInputChange={handleEditInputChange}
               setIsEditing={setIsEditing}
+              cancelEdit={cancelEdit}
             />
 
           </Stack>
