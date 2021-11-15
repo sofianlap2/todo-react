@@ -11,16 +11,21 @@ import Grid from '@mui/material/Grid';
 export default function TaskCard({todo, delteHandler, editHandler, completedHandler}) {
 
     return (
-        <List>
+        <Grid container xs={12} direction="row" alignItems="center">
+            <Grid xs={8}>
             <ListItem className={todo.complete ? 'task-li' : ''}>
               <ListItemText>{todo.task}</ListItemText>
             </ListItem>
+            </Grid>
+            <Grid xs={4} direction="column">
             <DeleteIcon 
-                color="secondary" 
+                color="primary"
                 onClick={() => delteHandler(todo)}
             />
             <ModeEditIcon size="small" variant="contained" onClick={() => editHandler(todo.id, 'john')}>Edit</ModeEditIcon>
             <CheckCircleIcon size="small" variant="contained" onClick={() => completedHandler(todo.id)}>{todo.complete? 'Completed' : 'todo' }</CheckCircleIcon>
-        </List>
+            </Grid>
+
+        </Grid>
     )
 }

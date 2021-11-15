@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 function TaskList({filteredTodos, delteHandler, editHandler, completedHandler}) {
     return (
         <Grid container justifyContent="center">
-            <Grid item xs={6}>
+            <Grid item xs={12}>
                 <Paper variant="outlined" square>
                     {filteredTodos && filteredTodos.map(todo => (
                         <TaskCard 

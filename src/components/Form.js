@@ -10,8 +10,8 @@ import Grid from '@mui/material/Grid';
 function Form({onSubmitHandler, newTask, onChangeHandler, status, selectChangeHandler}) {
     return (
         <form onSubmit={onSubmitHandler}>
-            <Grid container justifyContent="center" alignItems="center" direction="row">
-                <Grid item >
+            <Grid container justifyContent="center" alignItems="center" direction="row" spacing={1}>
+                <Grid item>
                     <TextField size="small" color="primary" value={newTask.task} id="task" name="task" placeholder="add task here" onChange={onChangeHandler}></TextField>
                 </Grid>
 

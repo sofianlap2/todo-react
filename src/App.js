@@ -7,6 +7,7 @@ import TaskList from './components/TaskList';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Grid';
 
 function App() {
 
@@ -104,9 +105,10 @@ function App() {
   }
 
   return (
-    <Container className="App" >
-      <Stack spacing={2} justifyContent="center" textAlign="center">
-          <Typography variant="h1">Todo app</Typography>
+    <Container className="App">
+      <Grid container height="100vh" direction="column" alignItems="center" justifyContent="center">
+        <Stack marginTop="50px" border="1px solid grey" padding={4} spacing={2} justifyContent="center" textAlign="center">
+          <Typography variant="h1" sx={{ fontSize: {xs:35, sm:70 } }}>Todo app</Typography>
 
           <Form 
             onSubmitHandler={onSubmitHandler}
@@ -124,7 +126,8 @@ function App() {
           />
 
         </Stack>
-      </Container>
+      </Grid>
+    </Container>
   );
 }
 
