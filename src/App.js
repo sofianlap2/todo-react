@@ -8,10 +8,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
+import {ErrorBoundary} from 'react-error-boundary';
 
 function App() {
 
   //**CONSTANTS */
+  const [isEditing, setIsEditing] = useState(null);
+  const [currentTodo, setCurrentTodo] = useState({});
   const [tasksList, setTasksList] = useState(data);
   const [filteredTodos, setFilteredTodos] = useState([]);
   const [status, setStatus] = useState('');
@@ -55,15 +58,6 @@ function App() {
     setTasksList(tasksList.filter(oneTask => oneTask.id !== todo.id))
   }
 
-  const editHandler = (id, newName) => {
-    setTasksList(tasksList.map(singletask => {
-      if (singletask.id === id) {
-        singletask.task = newName;
-      }
-      return singletask;
-    }));
-  }
-
   const completedHandler = (id) => {
     setTasksList(tasksList.map(singletask => {
       if (singletask.id === id) {
@@ -91,6 +85,23 @@ function App() {
     }
   }
 
+  function handleEditInputChange(e) {
+    // set the new state value to what's currently in the edit input box
+    setCurrentTodo({ ...currentTodo, text: e.target.value });
+  }
+    
+  const updateEdit = (id) => {
+    console.log('clicked');
+    setTasksList(tasksList.map(todo => {
+        if (todo.id === id) {
+            todo.task = currentTodo;
+        }
+        return todo;
+    }))
+    setIsEditing(null);
+    setCurrentTodo({});
+  }
+
   const saveLocalStorage = () => {
     localStorage.setItem('todos', JSON.stringify(tasksList));
   }
@@ -104,30 +115,46 @@ function App() {
     }
   }
 
+  function ErrorFallback({error}) {
+    return (
+      <div role="alert">
+        <p>Something went wrong:</p>
+        <pre style={{color: 'red'}}>{error.message}</pre>
+      </div>
+    )
+  }
+
   return (
-    <Container className="App">
-      <Grid container height="100vh" direction="column" alignItems="center" justifyContent="center">
-        <Stack marginTop="50px" border="1px solid grey" padding={4} spacing={2} justifyContent="center" textAlign="center">
-          <Typography variant="h1" sx={{ fontSize: {xs:35, sm:70 } }}>Todo app</Typography>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <Container className="App">
+        <Grid container height="100vh" direction="column" alignItems="center" justifyContent="center">
+          <Stack marginTop="50px" border="1px solid grey" padding={4} spacing={2} justifyContent="center" textAlign="center">
+            <Typography variant="h1" sx={{ fontSize: {xs:35, sm:70 } }}>Todo app</Typography>
 
-          <Form 
-            onSubmitHandler={onSubmitHandler}
-            onChangeHandler={onChangeHandler}
-            status={status}
-            selectChangeHandler={selectChangeHandler}
-            newTask={newTask}
-          />
+            <Form 
+              onSubmitHandler={onSubmitHandler}
+              onChangeHandler={onChangeHandler}
+              status={status}
+              selectChangeHandler={selectChangeHandler}
+              newTask={newTask}
+            />
 
-          <TaskList 
-            filteredTodos={filteredTodos} 
-            delteHandler={delteHandler} 
-            editHandler={editHandler} 
-            completedHandler={completedHandler} 
-          />
+            <TaskList 
+              filteredTodos={filteredTodos} 
+              delteHandler={delteHandler} 
+              completedHandler={completedHandler} 
+              tasksList={tasksList}
+              setTasksList={setTasksList}
+              isEditing={isEditing}
+              updateEdit={updateEdit}
+              handleEditInputChange={handleEditInputChange}
+              setIsEditing={setIsEditing}
+            />
 
-        </Stack>
-      </Grid>
-    </Container>
+          </Stack>
+        </Grid>
+      </Container>
+    </ErrorBoundary>
   );
 }
 
