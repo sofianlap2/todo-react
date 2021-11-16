@@ -41,7 +41,7 @@ function TaskList({
             )
         } else {
             return (
-                <Grid item xs={8}>
+                <Grid item xs={6}>
                     <ListItem className={todo.complete ? 'task-li' : ''}>
                         <ListItemText>{todo.task}</ListItemText>
                     </ListItem>
@@ -57,20 +57,20 @@ function TaskList({
                     {filteredTodos && filteredTodos.map((todo) => 
                         <Grid key={todo.id} container direction="row" alignItems="center">
     
-                        {enterEditMode(todo)}
-                        
-                        <Grid item xs={4} >
-                        <DeleteIcon 
-                            color="primary"
-                            onClick={() => delteHandler(todo)}
-                        />
-                        <ModeEditIcon size="small" variant="contained" 
-                        onClick={() => setIsEditing(todo.id)}
-                        >
-                            Edit
-                        </ModeEditIcon>
-                        <CheckCircleIcon size="small" variant="contained" onClick={() => completedHandler(todo.id)}>{todo.complete? 'Completed' : 'todo' }</CheckCircleIcon>
-                        </Grid>
+                            {enterEditMode(todo)}
+
+                            <Grid item xs={6} >
+                                <DeleteIcon 
+                                    color="primary"
+                                    onClick={() => delteHandler(todo)}
+                                />
+                                <ModeEditIcon size="small" variant="contained" 
+                                onClick={() => setIsEditing(todo.id)}
+                                >
+                                    Edit
+                                </ModeEditIcon>
+                                <CheckCircleIcon size="small" variant="contained" onClick={() => completedHandler(todo.id)}>{todo.complete? 'Completed' : 'todo' }</CheckCircleIcon>
+                            </Grid>
             
                         </Grid>
                     )}
