@@ -2,12 +2,12 @@
     {
         "task": "first task",
         "id": 0,
-        "complete" : true
+        "complete" : false
     },
     {
         "task": "Second task",
         "id": 1,
-        "complete" : true
+        "complete" : false
     },
     {
         "task": "Third task",

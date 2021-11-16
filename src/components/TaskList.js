@@ -27,9 +27,9 @@ function TaskList({
     const enterEditMode = (todo) => {
         if (todo.id === isEditing) {
             return(
-                <Grid container xs={8} alignItems="center">
+                <Grid container alignItems="center">
                     <Grid item xs={8}>
-                        <TextField size="small"/>
+                        <TextField onChange={handleEditInputChange} size="small"/>
                     </Grid>
                     <Grid item xs={2}>
                         <Button onClick={() => updateEdit(todo.id)}>edit</Button>

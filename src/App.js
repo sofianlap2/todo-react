@@ -33,7 +33,9 @@ function App() {
   useEffect(() => {
     filterHandler();
     saveLocalStorage();
-  }, [status, tasksList]);  useEffect(() => {
+  }, [status, tasksList]);
+  
+  useEffect(() => {
     filterHandler();
     saveLocalStorage();
   }, [status, tasksList]);
@@ -42,7 +44,7 @@ function App() {
     setNewTask({
       task : e.target.value,
       id: tasksList.length + Math.random() * 100,
-      complete : true
+      complete : false
     })
   }
 
@@ -91,12 +93,12 @@ function App() {
   }
     
   const updateEdit = (id) => {
-  //   setTasksList(tasksList.map(todo => {
-  //     if (todo.id === id) {
-  //         todo.task = currentTodo;
-  //     }
-  //     return todo;
-  // }))
+    setTasksList(tasksList.map(todo => {
+      if (todo.id === id) {
+        todo.task = currentTodo.text;
+      }
+      return todo;
+  }))
     setIsEditing(null);
     setCurrentTodo({});
   }
